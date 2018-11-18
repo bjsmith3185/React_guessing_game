@@ -1,0 +1,26 @@
+
+
+
+    .card {
+     height: 400px;
+     width: 400px;
+     /* background: red; */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    border: 4px solid gray;
+     
+    }
+
+    /* .heading {
+      background: "#3f51b5",
+      minHeight: 50,
+      lineHeight: 3.5,
+      fontSize: "1.2rem",
+      color: "white",
+      padding: "0 20px"
+    }
+    .content {
+      padding: 20
+    }
+  */

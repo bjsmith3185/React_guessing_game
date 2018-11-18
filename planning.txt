@@ -1,0 +1,16 @@
+
+
+
+smart cell
+
+    states:
+        - array: img, clicked: false/true, 
+        - score: 
+        - top score; 
+
+    onclick function()
+        - set clicked to : true
+        - function to shuffle the array
+        - increase score
+
+    
