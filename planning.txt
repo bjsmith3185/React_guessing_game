@@ -13,4 +13,43 @@ smart cell
         - function to shuffle the array
         - increase score
 
-    
+    game logic
+
+    - click on picture
+        - get the picture's id
+        - function to checkStatus()
+            - check if the id has been prev clicked ( clicked: true/false)
+                - if false
+                    - set clicked: true
+                    - increase score (monitor top score)
+                    - call function to start another round
+                - if true
+                    - end game
+
+    - function to start round()
+        - check if all of the clicked: true are = to array length
+            - if true
+                - end game
+            - if false
+                - call shuffle function
+
+    - end game function()
+        - display a <div> near the <title> that says you won!
+        - add an onclick to this new <div> to click to restart
+
+    - reset function()
+        - set score to 0
+        - reset the array clicked: to false
+
+    FUNCTIONS()
+
+    componentdidload() --- startround()
+    startround()
+    shuffle()
+    clickonimage()
+    checkStatus()
+    endgame()
+    resetgame()
+    increasescore()
+    topscore()
+

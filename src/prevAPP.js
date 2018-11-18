@@ -16,31 +16,19 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.startRound()
+    this.shuffle(this.state.friends);
   };
-
-  startRound = () => {
-
-    if(this.checkClickedValue(this.state.friends)) {
-      console.log("game is over")
-    } else {
-      console.log("keep Playing!!!")
-      this.shuffle(friends);
-    }
-
-
-  }
 
   shuffle = friends => {
 
     var currentIndex = friends.length;
     var temporaryValue, randomIndex;
-
-    while (0 !== currentIndex) {
-
+  
+      while (0 !== currentIndex) {
+  
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
-
+  
       temporaryValue = friends[currentIndex];
       friends[currentIndex] = friends[randomIndex];
       friends[randomIndex] = temporaryValue;
@@ -48,22 +36,35 @@ class App extends Component {
 
     this.setState({ friends: friends });
   };
-
+  
 
   clickImage = id => {
+
     console.log(` this is the id: ${id}.`);
-    // check if it has been clicked before
-    // if true: then end the game
-    // if false: then update clicked:true
-      // uncrease score
-      // start another round
+
+    this.checkClickedValue(id, this.state.friends);
+
+    // this.updateClickedValue(id, this.state.friends);
+    // console.log(this.state.friends)
+    // this.shuffle(this.state.friends);
+
+  };
+
+  checkClickedValue = (id, friends) => {
     for (var i in friends) {
       if (friends[i].id === id) {
+
         if (friends[i].clicked === true) {
-          // it has already been guessed here
-          this.endGame()
-        } else {
-          // sset the value to true
+          // they already clicked this one
+          console.log("they already clicked this one")
+          this.resetGame();
+
+          return;  // may not need this one
+
+
+        } else{
+          // set the clicked value to "true"
+          console.log("first time clicking this one")
           friends[i].clicked = true;
 
           this.setState({
@@ -71,31 +72,14 @@ class App extends Component {
           })
 
           this.increaseScore();
-          this.startRound();
+         
+          // return friends;
         }
-
-      }
+        return friends;
+        }
     }
-
-
-
+    // return friends;
   };
-
-  checkClickedValue = (friends) => {
-    // run thru to see if all clicked: true
-      // if true, call endGame()
-      // if false call shuffle()
- 
-        for(var i in friends)
-            if(!friends[i].clicked) return false; // game not over
-          
-        return true; // game is over!!!
-     
-  };
-
-  endGame = () => {
-
-  }
 
 
   increaseScore = () => {
@@ -106,10 +90,20 @@ class App extends Component {
 
     this.setTopScore(this.state.score);
 
+    if (this.state.score === this.state.friends.length) {
+      console.log("winner winner");
+      // function to end game
+
+    } else {
+      this.shuffle(this.state.friends);
+    }
+
+
+
   };
 
   setTopScore = currentScore => {
-    if (currentScore > this.state.topScore) {
+    if ( currentScore > this.state.topScore) {
       console.log(`new top score: ${currentScore}!`)
       this.setState({
         topScore: currentScore
@@ -125,20 +119,27 @@ class App extends Component {
   };
 
 
-  resetGame = () => {
+resetGame = () => {
 
-    const resetFriends = this.state.friends.map(friend => {
-      return friend.clicked = false;
-    })
+  const resetFriends = this.state.friends.map(friend => {
+   return friend.clicked = false;
+  })
 
-    this.setState({
-      friends: resetFriends
-    })
+  this.setState({
+    friends: resetFriends
+  })
 
-    this.resetScore();
-  };
+  this.resetScore();
+};
+
+// function to check if the player gets all 12 correct
+checkForWin = id => {
 
 
+
+
+
+}
 
 
 
@@ -147,7 +148,7 @@ class App extends Component {
   render() {
     return (
       <Wrapper>
-
+        
         <Title score={this.state.score} topScore={this.state.topScore}>Friends List</Title>
 
 
