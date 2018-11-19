@@ -2,10 +2,10 @@ import React from "react";
 import "./Title.css";
 
 const Title = props => (
-    <div>
-        <h1 className="title">{props.children}</h1>
-        <h3>current score: {props.score}</h3>
-        <h4>top score: {props.topScore}</h4>
+    <div className="title">
+        <h1 className="header">{props.children}</h1>
+        <h3 className="score">current score: {props.score}</h3>
+        <h4 className="top-score">top score: {props.topScore}</h4>
     </div>
 )
 

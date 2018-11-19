@@ -6,8 +6,6 @@ const Card = props => (
     <div className="img-container" onClick={() => props.clickImage(props.name)}>
       <img alt={props.name} src={props.image} />
     </div>
-    
-   <div>{props.name}</div>
   </div>
 );
 
