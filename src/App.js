@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Card from "./components/Card";
 import Wrapper from "./components/Wrapper";
 import Title from "./components/Title";
-// import Ending from "./components/Ending";
+import Ending from "./components/Ending";
 import friends from "./friends.json";
 import "./App.css";
 
@@ -13,16 +13,18 @@ class App extends Component {
     score: 0,
     topScore: 0,
     gameOver: false,
-    winner: false,
+    condition: "",
 
   };
 
   beginGameReset() {
+    console.log("this array should be empty");
+    console.log(this.state.gameArray);
     this.setState({
       gameArray: friends,
       score: 0,
       gameOver: false,
-      winner: false,
+      condition: "",
     })
 
   }
@@ -34,20 +36,47 @@ class App extends Component {
 
   startRound = () => {
 
+    //======================================
+    console.log("starting the checkfortruevalue()")
+    this.checkForWinner(this.state.gameArray)
+
+
+
+
+
+//=========================================
+
+    // var shuffledArray = this.shuffle(this.state.gameArray)
+    // this.setState({
+    //   gameArray: shuffledArray
+    // })
     // console.log(this.state.gameArray);
-    var shuffledArray = this.shuffle(this.state.gameArray)
-    this.setState({
-      gameArray: shuffledArray
-    })
-    console.log(this.state.gameArray);
   };
 
 
-  checkForTrueValue = (array) => {
-    for (var i in array)
-      if (!array[i].clicked) return false; // game not over
+  checkForWinner = (array) => {
+   
+    let numberArray = [];
 
-    return true; // game is over!!!
+    for (var i in array) {
+    if (!array[i].clicked) {
+    // game not over
+      numberArray.push("false")
+     } 
+    };
+
+    if (numberArray.length === 0) {
+      console.log("game is over, winner winner");
+      this.endGame("winner");
+    } else {
+      console.log("keep on guessing bro")
+      var shuffledArray = this.shuffle(this.state.gameArray)
+      this.setState({
+        gameArray: shuffledArray
+      })
+      console.log(this.state.gameArray);
+    }
+   
   };
 
 
@@ -93,7 +122,7 @@ class App extends Component {
     };
 
     if (hasBeenClicked) {
-      this.endGame()
+      this.endGame("loser")
     } else {
       console.log("this one has not been clicked before")
       for (var i = 0; i < newGameArray.length; i++) {
@@ -103,8 +132,8 @@ class App extends Component {
 
         }
       }
-      console.log("below is the newgamearray");
-      console.log(newGameArray);
+      // console.log("below is the newgamearray");
+      // console.log(newGameArray);
 
 
 
@@ -114,235 +143,72 @@ class App extends Component {
         topScore: this.state.topScore + 1
       })
 
+      
+
 
       this.startRound();
     }
-
-    // }
-    // }
-    // }
-
-
-
-
-
-    // for (var i in this.state.gameArray) {
-    //   if (this.state.gameArray[i].id === id) {
-    //     if (this.state.gameArray[i].clicked === true) {
-    //       console.log("too bad, it has already been guessed")
-    //       // it has already been guessed here
-    //       // this.endGame("lose")
-    //     } else {
-    //       // console.log("it has not been clicked")
-    //       // sset the value to true
-    //       // console.log("before updating clicked: ")
-    //       // console.log(this.state.gameArray)
-
-    // let newGameArray = [];
-
-    // newGameArray = this.state.gameArray;
-    // // console.log("this is the temp game array")
-    // // console.log(newGameArray)
-    // console.log(`this is the clicked id: ${id}`)
-    // // console.log(newGameArray[i].id)
-
-    // newGameArray[i].clicked = true;
-
-    // // console.log(newGameArray[i])
-
-    // this.setState({
-    //   gameArray: newGameArray,
-    //   score: this.state.score + 1,
-    //   topScore: this.state.topScore + 1
-    // })
-
-    //       this.startRound();
-    //     }
-
-    //   }
-    // }
   };
 
-  //==================================================================
-
-  // clickImage = id => {
-  //   console.log(` this is the id: ${id}.`);
-
-  //   for (var i in this.state.gameArray) {
-  //     if (this.state.gameArray[i].id === id) {
-  //       if (this.state.gameArray[i].clicked === true) {
-  //         console.log("too bad, it has already been guessed")
-  //         // it has already been guessed here
-  //         // this.endGame("lose")
-  //       } else {
-  //         // console.log("it has not been clicked")
-  //         // sset the value to true
-  //         // console.log("before updating clicked: ")
-  //         // console.log(this.state.gameArray)
-
-  //         let newGameArray = [];
-  //         newGameArray = this.state.gameArray;
-  //         // console.log("this is the temp game array")
-  //         // console.log(newGameArray)
-  //         console.log(`this is the clicked id: ${id}`)
-  //         // console.log(newGameArray[i].id)
-
-  //         newGameArray[i].clicked = true;
-
-  //         // console.log(newGameArray[i])
-
-  //         this.setState({
-  //           gameArray: newGameArray,
-  //           score: this.state.score + 1,
-  //           topScore: this.state.topScore + 1
-  //         })
+    endGame = (status) => {
+      console.log("inside endGame()");
+      // show a component for the end of game
+      // your score with a message, winner or loser
+      // add a button to play again
+     let condition;
+      if (status === "loser") {
+        condition = "loser"
+      } else {
+        condition = "winner"
+      }
 
 
+      this.setState({
+        gameOver: true,
+        condition: condition
+      })
+    };
 
-  //         // this.seeResults();
+    restart =() => {
+      console.log("you just clicked restart")
 
-  //         // this.increaseScore();
+      let resetGameArray = this.state.gameArray.map(item => {
+        return item.clicked = false;
+      });
 
-  //         // this.increaseScore();
-  //         this.startRound();
-  //       }
+      this.setState({
+        gameArray: resetGameArray
+      })
+      
+      this.beginGameReset();
+    };
 
-  //     }
-  //   }
-  // };
 
-  seeResults() {
+
+  seeResults = () =>  {
     console.log("this is the gamearray")
     console.log(this.state.gameArray)
     console.log(`this is the score ${this.state.score}`)
-  }
+  };
 
-  // increaseScore() {
-  //   this.setState({
-  //     score: this.state.score + 1
-  //   })
-
-  //  this.startRound()
-
-  // }
-
-  // checkForAWin() {
-  //   console.log(`this is the score: ${this.state.score}`)
-  //     if (this.state.score < this.state.gameArray.length) {
-  //       console.log("keep guessing bro")
-  //     } else {
-  //       console.log("winner winner")
-  //     }
-  // }
+  
 
 
-  // checkAnswers() {
-
-  //  let count = 0
-  //     for (var i=0; i < this.state.gameArray.length; i++) {
-  //         if (this.state.gameArray[i].clicked === false) {
-  //             // console.log("there is still a false in there")
-  //           count++
-
-  //           // this.continueGame()
-  //           // break;
-  //         }
-  //         // this.endGame()
-  //     }
-  //     console.log(count);
-  // this.endGame()
-
-
-  // for (var i in this.state.gameArray)
-  //   if (!this.state.gameArray[i].clicked) {
-  //     console.log("keep playing")
-  //     // if one of these is false the game is still going on.
-
-  //     // return false; // game not over
-  //   } else {
-  //     // return true; // game is over!!!
-  //     console.log("you win, all answers are true")
-
-  //   }
-  // };
-
-
-  endGame() {
-    console.log("game over")
-  }
-
-  // continueGame() {
-  //   console.log('continue game')
-  // }
-
-  // endGame = (status) => {
-
-  //   if (status === "lose") {
-  //     // end of game with looser status
-  //     this.setState({
-  //       gameOver: true
-  //     })
-  //   } else {
-  //     // end of game with winnet status
-  //     this.setState({
-  //       gameOver: true,
-  //       winner: true,
-  //     })
-  //   }
-
-  // }
-
-
-  // increaseScore = () => {
-  //   this.setState({
-  //     score: this.state.score + 1
-  //   })
-  //   // console.log(`the score is: ${this.state.score}.`)
-  //   if (this.state.score > this.state.topScore) {
-  //     // console.log(`new top score: ${currentScore}!`)
-  //     this.setState({
-  //       topScore: this.state.score
-  //     })
-  //   }
-  // };
-
-
-  // resetGame = () => {
-
-  //  let resetFriends = this.state.friends.map(friend => {
-  //     return friend.clicked = false;
-  //   })
-
-  //   this.setState({
-  //     friends: resetFriends,
-  //     gameOver: false,
-  //     winner: false,
-  //     score: 0,
-  //   })
-
-  // };
-
-
-
-
-
-
-
-  render() {
+  render= () => {
     return (
       <Wrapper>
 
-        <Title score={this.state.score} topScore={this.state.topScore}>Friends List</Title>
+        <Title score={this.state.score} topScore={this.state.topScore} >Friends List</Title>
 
-        {/*      
+             
         {this.state.gameOver ? (
 
-          <Ending />
+          <Ending score={this.state.score} condition={this.state.condition} restart={this.restart}/>
 
-        ) : ( */}
+        ) : (
 
 
-        {this.state.gameArray.map(item => (
+        this.state.gameArray.map(item => (
           <Card
             clickImage={this.clickImage}
             name={item.name}
@@ -350,16 +216,16 @@ class App extends Component {
             image={item.image}
           />
         ))
-        }
+     
 
-        {/* )} */}
+         )} 
 
 
 
       </Wrapper>
     );
-  }
-}
+  };
+};
 
 export default App;
 
